@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bg-Color-Changer</title>
+  <style>
+    /* Basic reset and styling */
+    body, html {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: white;
+      font-family: Arial, sans-serif;
+      transition: background-color 0.3s;
+    }
+
+    .container {
+      text-align: center;
+      
+    }
+
+    .color-buttons, .custom-colors {
+      display: flex;
+      justify-content: space-around;
+      margin: 10px 0;
+    }
+
+    button.color-btn, .color-swatch {
+      width: 60px;
+      height: 60px;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .color-btn:hover, .color-swatch:hover {
+      transform: scale(1.1);
+    }
+
+    .add-color {
+      margin: 20px 0;
+    }
+
+    input[type="text"] {
+      padding: 5px;
+      width: 70%;
+    }
+
+    button.add-btn {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>BG Color Changer</h2>
+    
+    <!-- Predefined color buttons -->
+    <div class="color-buttons">
+      <button class="color-btn" style="background-color: red;" onclick="changeColor('red')">red</button>
+      <button class="color-btn" style="background-color: green;" onclick="changeColor('green')"></button>
+      <button class="color-btn" style="background-color: blue;" onclick="changeColor('blue')"></button>
+    </div>
+
+    <!-- Input to add custom color -->
+    <div class="add-color">
+      <input type="text" id="colorInput" placeholder="Enter color (e.g., purple or #123456)">
+      <button class="add-btn" onclick="addCustomColor()">Add Color</button>
+    </div>
+
+    <!-- Custom colors added by the user -->
+    <div class="custom-colors" id="customColors">
+      <!-- Custom colors will be added here -->
+    </div>
+  </div>
+
+  <script>
+    // Function to change background color
+    function changeColor(color) {
+      document.body.style.backgroundColor = color;
+    }
+
+    // Function to add custom color to the panel
+    function addCustomColor() {
+      const colorInput = document.getElementById('colorInput').value;
+      if (colorInput) {
+        const customColorsContainer = document.getElementById('customColors');
+        
+        // Create a new color button
+        const newColorBtn = document.createElement('button');
+        newColorBtn.className = 'color-swatch';
+        newColorBtn.style.backgroundColor = colorInput;
+        
+        // Set the button to change background color on click
+        newColorBtn.onclick = () => changeColor(colorInput);
+        
+        // Append the new button to custom colors container
+        customColorsContainer.appendChild(newColorBtn);
+        
+        // Clear input field after adding the color
+        document.getElementById('colorInput').value = '';
+      } else {
+        alert('Please enter a valid color.');
+      }
+    }
+  </script>
+
+</body>
+</html>

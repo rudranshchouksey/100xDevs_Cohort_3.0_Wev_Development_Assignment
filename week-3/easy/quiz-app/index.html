@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App</title>
+  <style>
+    /* Basic styling */
+    body, html {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+    }
+
+    .quiz-container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h2 {
+      font-size: 1.5em;
+    }
+
+    .question {
+      margin: 20px 0;
+    }
+
+    .answers {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .answers label {
+      margin: 5px 0;
+      cursor: pointer;
+    }
+
+    .submit-btn, .next-btn {
+      padding: 10px 20px;
+      margin-top: 20px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+    }
+
+    .submit-btn:hover, .next-btn:hover {
+      background-color: #0056b3;
+    }
+
+    .result {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: green;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container">
+    <h2>Quiz App</h2>
+    <div id="quiz">
+      <div class="question" id="question"></div>
+      <div class="answers">
+        <label><input type="radio" name="answer" value="a"> <span id="a_text"></span></label>
+        <label><input type="radio" name="answer" value="b"> <span id="b_text"></span></label>
+        <label><input type="radio" name="answer" value="c"> <span id="c_text"></span></label>
+        <label><input type="radio" name="answer" value="d"> <span id="d_text"></span></label>
+      </div>
+      <button class="next-btn" onclick="nextQuestion()">Next</button>
+      <button class="submit-btn" onclick="submitQuiz()" style="display:none;">Submit</button>
+    </div>
+    <div class="result" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    const quizData = [
+      { question: "Which language runs in a web browser?", a: "Java", b: "C", c: "Python", d: "JavaScript", correct: "d" },
+      { question: "What does CSS stand for?", a: "Central Style Sheets", b: "Cascading Style Sheets", c: "Cascading Simple Sheets", d: "Cars SUVs Sailboats", correct: "b" },
+      { question: "What does HTML stand for?", a: "Hypertext Markup Language", b: "Hypertext Markdown Language", c: "Hyperloop Machine Language", d: "Helicopters Terminals Motorboats Lamborghinis", correct: "a" },
+      { question: "What year was JavaScript launched?", a: "1996", b: "1995", c: "1994", d: "none of the above", correct: "b" },
+    ];
+
+    let currentQuiz = 0;
+    let score = 0;
+
+    const questionEl = document.getElementById('question');
+    const answerEls = document.querySelectorAll('.answers input');
+    const a_text = document.getElementById('a_text');
+    const b_text = document.getElementById('b_text');
+    const c_text = document.getElementById('c_text');
+    const d_text = document.getElementById('d_text');
+    const resultEl = document.getElementById('result');
+    const submitBtn = document.querySelector('.submit-btn');
+    const nextBtn = document.querySelector('.next-btn');
+
+    function loadQuiz() {
+      deselectAnswers();
+      const currentQuizData = quizData[currentQuiz];
+      questionEl.innerText = currentQuizData.question;
+      a_text.innerText = currentQuizData.a;
+      b_text.innerText = currentQuizData.b;
+      c_text.innerText = currentQuizData.c;
+      d_text.innerText = currentQuizData.d;
+
+      // Show the correct button based on the question
+      if (currentQuiz === quizData.length - 1) {
+        nextBtn.style.display = 'none';
+        submitBtn.style.display = 'inline';
+      } else {
+        nextBtn.style.display = 'inline';
+        submitBtn.style.display = 'none';
+      }
+    }
+
+    function deselectAnswers() {
+      answerEls.forEach(answerEl => answerEl.checked = false);
+    }
+
+    function getSelected() {
+      let answer;
+      answerEls.forEach(answerEl => {
+        if (answerEl.checked) {
+          answer = answerEl.value;
+        }
+      });
+      return answer;
+    }
+
+    function nextQuestion() {
+      const answer = getSelected();
+      if (answer) {
+        if (answer === quizData[currentQuiz].correct) {
+          score++;
+        }
+        currentQuiz++;
+        if (currentQuiz < quizData.length) {
+          loadQuiz();
+        }
+      } else {
+        alert("Please select an answer!");
+      }
+    }
+
+    function submitQuiz() {
+      const answer = getSelected();
+      if (answer) {
+        if (answer === quizData[currentQuiz].correct) {
+          score++;
+        }
+        // Hide quiz and show result
+        document.getElementById('quiz').style.display = 'none';
+        resultEl.innerHTML = `You scored ${score} out of ${quizData.length}`;
+        resultEl.style.display = 'block';
+      } else {
+        alert("Please select an answer!");
+      }
+    }
+
+    loadQuiz();
+  </script>
+
+</body>
+</html>
