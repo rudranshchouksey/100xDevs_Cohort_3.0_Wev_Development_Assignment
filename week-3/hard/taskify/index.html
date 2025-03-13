@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Taskify - Task Management App</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .task-board {
+      display: flex;
+      gap: 20px;
+      max-width: 1200px;
+      width: 100%;
+      padding: 20px;
+    }
+
+    .category {
+      width: 25%;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top: 5px solid #3498db;
+    }
+
+    .category h3 {
+      text-align: center;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1.2em;
+    }
+
+    .task-card {
+      background: #3498db;
+      color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: grab;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+      transition: background-color 0.2s ease;
+    }
+
+    .task-card:hover {
+      background: #2980b9;
+    }
+
+    .task-card h4 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1em;
+    }
+
+    .task-card p {
+      margin: 8px 0 10px;
+      font-size: 0.9em;
+      color: #e3f2fd;
+    }
+
+    .label {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 0.8em;
+      color: #fff;
+      margin-right: 8px;
+    }
+
+    .medium { background: #ff9800; }
+    .low { background: #4caf50; }
+    .urgent { background: #e74c3c; }
+
+    .add-task {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: #3498db;
+      color: #fff;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      text-align: center;
+      transition: background-color 0.3s ease;
+    }
+
+    .add-task:hover {
+      background: #2980b9;
+    }
+
+    .hide {
+      display: none;
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="task-board">
+  <div class="category" id="todo">
+    <h3>To Do</h3>
+    <div class="task-card" draggable="true" id="task1">
+      <h4>Sample Task 1</h4>
+      <p>Example description</p>
+      <span class="label medium">Medium</span>
+      <span class="date">July 31, 2024</span>
+    </div>
+    <button class="add-task" onclick="addTask('todo')">Add new +</button>
+  </div>
+
+  <div class="category" id="inProgress">
+    <h3>In Progress</h3>
+    <button class="add-task" onclick="addTask('inProgress')">Add new +</button>
+  </div>
+
+  <div class="category" id="underReview">
+    <h3>Under Review</h3>
+    <button class="add-task" onclick="addTask('underReview')">Add new +</button>
+  </div>
+
+  <div class="category" id="finished">
+    <h3>Finished</h3>
+    <button class="add-task" onclick="addTask('finished')">Add new +</button>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll(".task-card").forEach(task => {
+    task.addEventListener("dragstart", dragStart);
+  });
+
+  document.querySelectorAll(".category").forEach(category => {
+    category.addEventListener("dragover", allowDrop);
+    category.addEventListener("drop", drop);
+  });
+
+  function dragStart(e) {
+    e.dataTransfer.setData("text/plain", e.target.id);
+    setTimeout(() => e.target.classList.add("hide"), 0);
+  }
+
+  function allowDrop(e) {
+    e.preventDefault();
+  }
+
+  function drop(e) {
+    e.preventDefault();
+    const taskId = e.dataTransfer.getData("text/plain");
+    const task = document.getElementById(taskId);
+    e.currentTarget.appendChild(task);
+    task.classList.remove("hide");
+  }
+
+  function addTask(categoryId) {
+    const taskTitle = prompt("Enter task title:");
+    const taskDesc = prompt("Enter task description:");
+    const priority = prompt("Enter priority (Low, Medium, Urgent):");
+
+    if (!taskTitle || !taskDesc || !priority) return;
+
+    const taskId = `task${Date.now()}`;
+    const taskCard = document.createElement("div");
+    taskCard.className = "task-card";
+    taskCard.id = taskId;
+    taskCard.draggable = true;
+    taskCard.innerHTML = `
+      <h4>${taskTitle}</h4>
+      <p>${taskDesc}</p>
+      <span class="label ${priority.toLowerCase()}">${priority}</span>
+      <span class="date">${new Date().toLocaleDateString()}</span>
+    `;
+
+    taskCard.addEventListener("dragstart", dragStart);
+
+    document.getElementById(categoryId).appendChild(taskCard);
+  }
+</script>
+
+</body>
+</html>

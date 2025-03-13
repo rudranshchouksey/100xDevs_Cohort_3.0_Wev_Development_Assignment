@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Builder</title>
+  <style>
+    /* Basic styling */
+    body, html {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+    }
+
+    .form-builder {
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    .control-panel, .preview {
+      margin-top: 20px;
+    }
+
+    .control-panel select, .control-panel button, .control-panel input {
+      padding: 8px;
+      margin: 5px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+      width: 100%;
+    }
+
+    .preview h3 {
+      text-align: left;
+    }
+
+    .preview div {
+      margin: 10px 0;
+    }
+
+    .preview input[type="text"], .preview input[type="checkbox"], .preview input[type="radio"] {
+      margin-right: 5px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="form-builder">
+    <h2>Form Builder</h2>
+    
+    <!-- Control Panel -->
+    <div class="control-panel">
+      <select id="fieldType">
+        <option value="text">Text Input</option>
+        <option value="checkbox">Checkbox</option>
+        <option value="radio">Radio Button</option>
+      </select>
+      <input type="text" id="labelInput" placeholder="Enter label for field" />
+      <button onclick="addField()">Add Field</button>
+    </div>
+    
+    <!-- Preview Area -->
+    <div class="preview">
+      <h3>Form Preview</h3>
+      <form id="formPreview">
+        <!-- Dynamically added fields will go here -->
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function addField() {
+      const fieldType = document.getElementById("fieldType").value;
+      const label = document.getElementById("labelInput").value.trim();
+      const formPreview = document.getElementById("formPreview");
+
+      // If no label is provided, prompt the user
+      if (!label) {
+        alert("Please enter a label for the field.");
+        return;
+      }
+
+      // Create a container for each new field
+      const fieldContainer = document.createElement("div");
+
+      // Create the label element
+      const labelElement = document.createElement("label");
+      labelElement.innerText = label;
+      labelElement.style.display = "inline-block";
+      labelElement.style.marginRight = "8px";
+
+      // Append label to the field container
+      fieldContainer.appendChild(labelElement);
+
+      // Create and append the input field based on selected type
+      if (fieldType === "text") {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.placeholder = label;
+        fieldContainer.appendChild(input);
+
+      } else if (fieldType === "checkbox") {
+        const input = document.createElement("input");
+        input.type = "checkbox";
+        input.id = label;
+        labelElement.setAttribute("for", label); // Link label to checkbox
+        fieldContainer.appendChild(input);
+
+      } else if (fieldType === "radio") {
+        const input = document.createElement("input");
+        input.type = "radio";
+        input.name = "radioGroup"; // Same name for all radio buttons to group them
+        input.id = label;
+        labelElement.setAttribute("for", label); // Link label to radio button
+        fieldContainer.appendChild(input);
+      }
+
+      // Add the new field to the preview area
+      formPreview.appendChild(fieldContainer);
+
+      // Clear label input for the next field
+      document.getElementById("labelInput").value = "";
+    }
+  </script>
+
+</body>
+</html>
