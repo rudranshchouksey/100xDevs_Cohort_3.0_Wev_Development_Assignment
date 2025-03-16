@@ -1,14 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coursify</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <!-- write your code here -->
-     
-    <script src="./script.js"></script>
+
+  <h1>Coursify</h1>
+
+  <div class="container">
+    <!-- Admin Section -->
+    <section class="admin">
+      <h2>Admin Panel</h2>
+      <input type="text" id="admin-username" placeholder="Admin Username" />
+      <input type="password" id="admin-password" placeholder="Admin Password" />
+      <button onclick="adminSignup()">Signup</button>
+      <button onclick="adminLogin()">Login</button>
+
+      <h3>Create Course</h3>
+      <input type="text" id="course-title" placeholder="Title" />
+      <input type="text" id="course-desc" placeholder="Description" />
+      <input type="number" id="course-price" placeholder="Price" />
+      <input type="text" id="course-image" placeholder="Image Link" />
+      <button onclick="createCourse()">Create Course</button>
+
+      <button onclick="getAllCourses()">Get All Courses</button>
+
+      <div id="admin-courses"></div>
+    </section>
+
+    <!-- User Section -->
+    <section class="user">
+      <h2>User Panel</h2>
+      <input type="text" id="user-username" placeholder="User Username" />
+      <input type="password" id="user-password" placeholder="User Password" />
+      <button onclick="userSignup()">Signup</button>
+      <button onclick="userLogin()">Login</button>
+
+      <button onclick="listCourses()">List All Courses</button>
+      <button onclick="listPurchasedCourses()">My Purchased Courses</button>
+
+      <div id="user-courses"></div>
+      <div id="purchased-courses"></div>
+    </section>
+  </div>
+
+  <script src="./script.js"></script>
 </body>
 </html>
