@@ -1,16 +1,42 @@
-// register code here
-import React from 'react'
-import axios from "axios"
-
+import React, { useState } from 'react';
+import axios from 'axios';
 
 const Register = () => {
-    // call the functions onClick of button.
-    async function handleRegister() {
-        const resposne = await axios.post(); // if you don't know about axios, give it a read https://axios-http.com/docs/intro
-    }
-    return (
-        <div>Register</div>
-    )
-}
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-export default Register
+  async function handleRegister() {
+    try {
+      const response = await axios.post('http://localhost:3000/users/signup', {
+        username,
+        password
+      });
+      alert(response.data.message);
+    } catch (error) {
+      alert('Registration failed');
+      console.error(error);
+    }
+  }
+
+  return (
+    <div className="form">
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+
+      <button onClick={handleRegister}>Register</button>
+    </div>
+  );
+};
+
+export default Register;

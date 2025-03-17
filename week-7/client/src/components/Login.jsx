@@ -1,15 +1,45 @@
-// login code here
+import React, { useState } from 'react';
 import axios from 'axios';
-import React from 'react'
 
 const Login = () => {
-    // call the functions onClick of button.
-    async function handleLogin() {
-        const resposne = await axios.post(); // // if you don't know about axios, give it a read https://axios-http.com/docs/intro
-    }
-    return (
-        <div>Login</div>
-    )
-}
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-export default Login
+  async function handleLogin() {
+    try {
+      const response = await axios.post('http://localhost:3000/users/login', null, {
+        headers: {
+          username,
+          password
+        }
+      });
+      alert(response.data.message);
+      localStorage.setItem('token', response.data.token);
+    } catch (error) {
+      alert('Login failed');
+      console.error(error);
+    }
+  }
+
+  return (
+    <div className="form">
+      <input
+        type="text"
+        placeholder="Username"
+        value={username}
+        onChange={e => setUsername(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={e => setPassword(e.target.value)}
+      />
+
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
+};
+
+export default Login;
